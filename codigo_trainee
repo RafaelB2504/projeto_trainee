@@ -1,1 +1,82 @@
 
+#pragma config(Motor,  motor1,          motorEsquerdo, tmotorVexIQ, PIDControl, encoder)
+#pragma config(Motor,  motor2,          motorDireito,  tmotorVexIQ, PIDControl, encoder)
+#pragma config(Sensor, S1,  e18,           sensorSONAR)
+#pragma config(Sensor, S2,  e17,           sensorSONAR)
+#pragma config(Sensor, S3,  meio,           sensorSONAR)
+
+
+// DistÃ¢ncia ideal de deteccao considerando a angulacao o dos sonares
+// Ajuste o valor abaixo conforme necessario (em centimetros)
+#define DISTANCIA_ALVO 30
+task main()
+{
+    wait1Msec(5000);
+
+    //estrategia inicial
+    //"olezinho" + "sairBorda"
+    motor[motorEsquerdo] = 100;
+    motor[motorDireito] = 100;
+    wait1Msec (500);
+    motor[motorEsquerdo] = 100;
+    motor[motorDireito]  = 60;
+    wait1Msec(500);
+    motor[motorEsquerdo] = 100;
+    motor[motorDireito] = 100;
+    wait1Msec(500);
+    motor[motorEsquerdo] = 60;
+    motor[motorDireito] = 100;
+    wait1Msec(500);
+
+    // estrategia de combate
+    while(true)
+    {
+        // Leitura em tempo real dos 3 sonares
+        int distEsq = SensorValue[e18];
+        int distCen = SensorValue[meio];
+        int distDir = SensorValue[e17];
+
+        if (distCen < DISTANCIA_ALVO) //caso A: alvo no centro
+        {
+            motor[motorEsquerdo] = 100;
+            motor[motorDireito]  = 100;
+        }
+        else if (distEsq < DISTANCIA_ALVO) //caso B: alvo a esquerda
+        {
+            while (distEsq > distCen)
+          {
+          	motor[motorEsquerdo] = 30;
+            motor[motorDireito]  = 70;
+          }
+            motor[motorEsquerdo] = 100;
+            motor[motorDireito] = 100;
+        }
+        else if (distDir < DISTANCIA_ALVO) //caso C: alvo a  direita
+        {
+          // gira enquanto a leitura lateral for maior que a central
+          while (SensorValue[e17] > SensorValue[meio])
+          {
+            motor[motorEsquerdo] = 70;
+            motor[motorDireito]  = 30;
+            // atualiza leituras
+            wait1Msec(20);
+          }
+          motor[motorEsquerdo] = 100;
+          motor[motorDireito] = 100;
+        }
+        else //perdeu de vista: procura o alvo girando ate algum sonar detectar
+        {
+            while(!(SensorValue[e18] < DISTANCIA_ALVO || SensorValue[e17] < DISTANCIA_ALVO || SensorValue[meio] < DISTANCIA_ALVO))
+            {
+                motor[motorEsquerdo] = 40;
+                motor[motorDireito]  = -40;
+                wait1Msec(20);
+            }
+            motor[motorEsquerdo] = 0;
+            motor[motorDireito]  = 0;
+        }
+
+        // Delay de estabilizaï¿½ï¿½o dos sensores
+        wait1Msec(20);
+    }
+}
