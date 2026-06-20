@@ -13,9 +13,24 @@ task main()
 
 wait1Msec(5000);
 
+//Olézinho
+
+motor[esquerda] = 100;
+motor[direita] = -100;
+wait1Msec(250);
+
+motor[esquerda] = -100;
+motor[direita] = 100;
+wait1Msec(150);
+
+motor[esquerda] = 0;
+motor[direita] = 0;
+
+
 motor[rampa] = 50;
 wait1Msec(1000);
 motor[rampa] = 0;
+
 
  
 while (true)
@@ -24,29 +39,29 @@ int sonarEsq = SensorValue[sEsquerda];
 int sonarCentr = SensorValue[sCentro];
 int sonarDir = SensorValue[sDireita];
 
-if(sonarCentr < 30)
+if(sonarCentr < 25)
 {
 motor[esquerda] = 100;
 motor[direita] = 100;
 }
 
-else if(sonarEsq < 30)
+else if(sonarEsq < 25)
 {
-motor[esquerda] = 50;
+motor[esquerda] = 20;
 motor[direita] = 100;
 
 }
 
-else if(sonarDir < 30)
+else if(sonarDir < 25)
 {
 motor[esquerda] = 100;
-motor[direita] = 50;
+motor[direita] = 20;
 
 }
 
 else
 {
- motor[esquerda] = 70;
+motor[esquerda] = 70;
 motor[direita] = -70;
 }
 
