@@ -13,7 +13,7 @@ task main()
 
 wait1Msec(5000);
 
-motor[rampa] = 100;
+motor[rampa] = 50;
 wait1Msec(1000);
 motor[rampa] = 0;
 
