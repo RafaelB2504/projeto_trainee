@@ -1,0 +1,77 @@
+
+#pragma config(Sensor, S1, sEsquerda, sensorSONAR)
+#pragma config (Sensor, S2, sCentro, sensorSONAR)
+#pragma config (Sensor, S3, sDireita, sensorSONAR)
+
+#pragma config (Motor, motorB, esquerda, tmotorNXT, PIDControl, reversed, encoder)
+#pragma config (Motor, motorA, rampa, tmotorNXT, PIDControl, encoder)
+#pragma config (Motor, motorC, direita, tmotorNXT, PIDControl, encoder)
+
+
+task main()
+{
+
+wait1Msec(5000);
+
+//Olézinho
+
+motor[esquerda] = 100;
+motor[direita] = -100;
+wait1Msec(250);
+
+motor[esquerda] = -100;
+motor[direita] = 100;
+wait1Msec(150);
+
+motor[esquerda] = 0;
+motor[direita] = 0;
+
+
+motor[rampa] = 50;
+wait1Msec(1000);
+motor[rampa] = 0;
+
+
+ 
+while (true)
+{
+int sonarEsq = SensorValue[sEsquerda];
+int sonarCentr = SensorValue[sCentro];
+int sonarDir = SensorValue[sDireita];
+
+if(sonarCentr < 25)
+{
+motor[esquerda] = 100;
+motor[direita] = 100;
+}
+
+else if(sonarEsq < 25)
+{
+motor[esquerda] = 20;
+motor[direita] = 100;
+
+}
+
+else if(sonarDir < 25)
+{
+motor[esquerda] = 100;
+motor[direita] = 20;
+
+}
+
+else
+{
+motor[esquerda] = 70;
+motor[direita] = -70;
+}
+
+wait1Msec(20);
+
+
+
+    }
+   
+  
+}
+
+
