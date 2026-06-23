@@ -1,11 +1,9 @@
-
 #pragma config(Sensor, S1, sEsquerda, sensorSONAR)
 #pragma config (Sensor, S2, sCentro, sensorSONAR)
 #pragma config (Sensor, S3, sDireita, sensorSONAR)
-
 #pragma config (Motor, motorB, esquerda, tmotorNXT, PIDControl, reversed, encoder)
 #pragma config (Motor, motorA, rampa, tmotorNXT, PIDControl, encoder)
-#pragma config (Motor, motorC, direita, tmotorNXT, PIDControl, encoder)
+#pragma config (Motor, motorC, direita, tmotorNXT, PIDControl,reversed, encoder)
 
 
 task main()
@@ -13,24 +11,36 @@ task main()
 
 wait1Msec(5000);
 
-//Olézinho
+
+motor[esquerda] = 100;
+motor[direita] = 100;
+wait1Msec(1000);
 
 motor[esquerda] = 100;
 motor[direita] = -100;
-wait1Msec(250);
+wait1Msec(170);
 
-motor[esquerda] = -100;
+motor[esquerda] = 100;
 motor[direita] = 100;
-wait1Msec(150);
+wait1Msec(1000);
+
+
+motor[esquerda] = 100;
+motor[direita] = -100;
+wait1Msec(420);
 
 motor[esquerda] = 0;
 motor[direita] = 0;
 
 
-motor[rampa] = 50;
-wait1Msec(1000);
-motor[rampa] = 0;
 
+motor[rampa] = -30;
+wait1Msec(500);
+motor[rampa] = -5;
+
+motor[esquerda] = 100;
+motor[direita] = 100;
+wait1Msec(1500);
 
  
 while (true)
@@ -73,5 +83,3 @@ wait1Msec(20);
    
   
 }
-
-
