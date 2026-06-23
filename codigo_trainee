@@ -34,9 +34,9 @@ motor[direita] = 0;
 
 
 
-motor[rampa] = -30;
-wait1Msec(500);
-motor[rampa] = -5;
+motor[rampa] = -60;
+wait1Msec(150);
+motor[rampa] = -3;
 
 motor[esquerda] = 100;
 motor[direita] = 100;
